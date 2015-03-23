@@ -1,0 +1,9 @@
+# Idea project files
+.idea 
+
+# Maven build folder
+target
+*.iml
+
+# Vim swap files
+.*.swp

@@ -1,0 +1,54 @@
+total time: 10h
+
+Questions
+       gunzip file 
+       www.safaribooksonline.com/library/view/hadoop-the-definitive/9781449328917/ch04.html
+
+       binary vs text
+       It seems that hadoop has a way to automatically read files and split them
+       for you, which probably don't work on binary files
+
+       hadoop-streaming
+       unzip example in GETTING_STARTED suggests it might be possible to do this
+       homework with only a script, but I don't want to try thatd.
+       
+       dataset big in # or size of files
+       500ish files - not too many
+       
+First ideas
+    try to get away with setting the inputKeys with something that  
+    seems appropriate and let hadoop do all the unzipping
+    Simple mapper and reducer passing aroung SequenceFiles 
+
+After reflexion, sending bytes from mapper to reducer is a bad idea.
+Furthermore, gzip is not splittable.
+
+New idea
+    just pass the path to the map reduce along with sizes and find a way to
+    distribute them along reducers 
+
+Google things I need
+    list files on hdfs : fs.listStatus
+    filter the ones that end with ".gz" : PathFilter
+
+first I use a temp file with the list of the files from input
+directory and use that as input - first success
+
+I add load balancing before the mapper, because I need to write the elements
+with the right key to the tmp file.
+
+Once that works, I implement a new InputFormat to avoid having to write
+to a tmp file. After looking at documentation, I understand nothing.
+I decide to guess what the functions are supposed to do from their names.
+
+After fixing problems with my custom split, I'm able to make it work (thank
+you StackOverflow, I can count on you).
+
+Final Design
+    Custom InputFormat encodes only the path to inputFolder
+    Single mapper gets one path and performs load balancing
+    Reducer unzips all files it receives
+
+The last piece to the puzzle is to use the NullOutputFormat so that mapReduce
+doesn't ouput anything more in the output folder.
+

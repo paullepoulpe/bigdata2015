@@ -1,0 +1,96 @@
+Due Tuesday March 10, 1:15pm (just before the lecture)
+
+
+Goal
+====
+
+Write a Java map-reduce application which, given an HDFS input directory path
+and an HDFS output directory path, gunzips all the <filename>.gz files in the
+input directory and writes the uncompressed files to the output directory.
+
+Do not implement your own algorithm of decompressing a gz file. Hadoop supports
+gz in multiple ways. You may assume that the input directory contains only
+gzipped files and in particular no subdirectories.
+
+(*1) The gzipped files are not necessarily text files but may be binary files.
+
+(*2)The output files must correspond to the input files in that for every file
+<filename>.gz in the input directory, there is exactly one file <filename> in
+the output directory (so, in particular, don't create a result of part-XYZ
+files).
+
+(*3) At any time, your app must not use more than 50 containers in parallel. The
+input directory will in general contain many more than 50 files. gz is an
+inherently sequential compression format, but you can parallelize decompression
+of multiple files.  Make the app as fast as you can. Can you take skew --
+different file sizes -- into account given the design of HDFS and mapreduce?
+
+Just like for wordcount, the command line takes the input directory path and the
+output directory path as arguments. The output directory must not exist and is
+to be created by your tool.  Provide your tool as a jar Homework1.jar. We must
+be able to run your tool, assuming the jar is in the current directory, by
+
+    hadoop jar Homework1.jar Homework1 <mapreduce options> <input-dir-path>  <output-dir-path>
+
+
+Grading
+=======
+
+We ask you to implement a solution as specified above, but also document your journey.
+
+What does this mean: 
+
+Describe the major solution approaches you considered (which you considered
+solution candidates at least for a time), which API classes you looked into and
+what you read. Don't make this crazily long (no longer than 2000 characters of
+text). How much time did you spend overall?
+
+The grade will depend 50% on the implementation and 50% on this journal. So if
+you failed and your journal shows reasonable solution approaches, you can get
+credit for that.
+
+There are three key challenges for implementing this, labelled(*1-3) above.
+Each contributed one third to the grade of the implementation.
+
+
+Submission
+==========
+
+On moodle. Provide a zip with your file Homework1.jar, the source files, and a
+file README.txt that documents your journey.
+
+
+Academic integrity
+==================
+
+Since this is the first grade-relevant action you take, we remind you of the
+academic integrity rules, see http://data.epfl.ch/bigdatacourse .
+It is very important that you take the entire journey of this homework alone. In
+other contexts, it may be acceptable for you to learn in a group of students as
+long as you solve the problem alone.
+Here you are asked to document your journey, so it is part of the problem
+solving and of the grade, so you must do the search of Hadoop documentation and
+web-based info on your own.
+
+
+Hints
+=====
+
+Look at the unzip example in our GETTING_STARTED.txt file, at Hadoop-Streaming,
+RecordReaders and OutputFormats.  There is a wealth of information, all on the
+Web. Most questions are answered there, somewhere. Make good use of Google
+search. What are the terms and phrases to look for?  Don't just look into
+official Hadoop pages, some gems are to be found in newsgroups, such as
+stackoverflow's, HortonWorks', and Cloudera's.
+
+
+Comment
+=======
+
+You may have hoped to get to analytics right away. Homework 2 will be analytics.
+This exercise is important. For a fast-moving stack like Hadoop, the time of
+getting away from the internet and reading a book is almost over. To cope, solve
+problems, and even become an expert, you need to familiarize yourself with the
+way information for such systems is provided online. This will really help you
+later in the course and in the future. Have fun!
+
